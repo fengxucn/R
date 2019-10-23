@@ -26,20 +26,20 @@ vcfdata <- opt$vcfdata
 output_extra <- opt$extra
 output_weight <- opt$weight
 
-print("generate the extra data...")
+message("generate the extra data...")
 load(rdata)
 d1 = info[,c(1,1,5,4)]
 df = data.frame(d1)
 names(df) <- c("gene", "genename","R2","n.snps")
 write.csv(df, file = output_extra,row.names=FALSE)
-print("extra data ready")
+message("extra data ready")
 
-print("loading vcf data...")
+message("loading vcf data...")
 vcf <- fread(vcfdata)
 d1 = vcf[,c(3,4,5)]
 d2<- data.frame(d1)
 
-print("generate the weight data...")
+message("generate the weight data...")
 df1 <- do.call(rbind, NET)
 df2 = data.frame(df1)
 df3 = merge(df2, d2, by.x="SNP.RS.ID", by.y="V3")
@@ -47,4 +47,4 @@ df3$x <- paste(df3$SNP.chromosome,df3$SNP.basepair.position,sep=":")
 result = df3[,c(9,6,3,7,8)]
 names(result) <- c("rsid", "gene","weight","ref_allele","eff_allele")
 write.csv(result, file = output_weight,row.names=FALSE)
-print("weight data ready")
+message("weight data ready")
